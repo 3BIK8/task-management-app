@@ -7,17 +7,23 @@ const config = require("../config");
 function authenticateToken(req, res, next) {
 	const token = req.header("Authorization");
 
-	console.log("Received token:", token);
-
-	if (!token) {
+	// Check if the token starts with "Bearer "
+	if (!token || !token.startsWith("Bearer ")) {
 		return res.status(401).json({ message: "Unauthorized" });
 	}
 
-	jwt.verify(token, config.jwtSecret, (error, user) => {
+	// Extract the token without the "Bearer " prefix
+	const actualToken = token.split(" ")[1];
+
+	console.log("Received token:", token);
+	console.log("Actual token for verification:", actualToken);
+
+	jwt.verify(actualToken, config.jwtSecret, (error, user) => {
 		if (error) {
-			console.error("JWT Verification Error:", error); // Add this line for logging
+			console.error("JWT Verification Error:", error);
 			return res.status(403).json({ message: "Forbidden" });
 		}
+
 		req.user = user;
 		next();
 	});
