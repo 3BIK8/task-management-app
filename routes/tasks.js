@@ -29,24 +29,22 @@ function authenticateToken(req, res, next) {
 	});
 }
 
+// Get all tasks
 router.get("/", authenticateToken, async (req, res) => {
 	try {
-		console.log("Decoded User:", req.user); // Add this line for logging
-		const tasks = await Task.find();
+		const tasks = await Task.find({ user: req.user.userId });
 		res.json(tasks);
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 	}
 });
 
-router.get("/:id", authenticateToken, getTask, (req, res) => {
-	res.json(res.task);
-});
-
+// Create a new task
 router.post("/", authenticateToken, async (req, res) => {
 	const task = new Task({
 		title: req.body.title,
 		description: req.body.description,
+		user: req.user.userId,
 	});
 
 	try {
@@ -57,47 +55,41 @@ router.post("/", authenticateToken, async (req, res) => {
 	}
 });
 
-router.patch("/:id", authenticateToken, getTask, async (req, res) => {
-	if (req.body.title != null) {
-		res.task.title = req.body.title;
-	}
-
-	if (req.body.description != null) {
-		res.task.description = req.body.description;
-	}
-
+// Update a task
+router.patch("/:id", authenticateToken, async (req, res) => {
 	try {
-		const updatedTask = await res.task.save();
+		const updatedTask = await Task.findByIdAndUpdate(
+			req.params.id,
+			{
+				title: req.body.title,
+				description: req.body.description,
+			},
+			{ new: true }
+		);
+
+		if (!updatedTask) {
+			return res.status(404).json({ message: "Task not found" });
+		}
+
 		res.json(updatedTask);
-	} catch (error) {
-		res.status(400).json({ message: error.message });
-	}
-});
-
-router.delete("/:id", authenticateToken, getTask, async (req, res) => {
-	try {
-		await res.task.remove();
-		res.json({ message: "Task deleted" });
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 	}
 });
 
-async function getTask(req, res, next) {
-	let task;
-
+// Delete a task
+router.delete("/:id", authenticateToken, async (req, res) => {
 	try {
-		task = await Task.findById(req.params.id);
+		const deletedTask = await Task.findByIdAndRemove(req.params.id);
 
-		if (task == null) {
+		if (!deletedTask) {
 			return res.status(404).json({ message: "Task not found" });
 		}
-	} catch (error) {
-		return res.status(500).json({ message: error.message });
-	}
 
-	res.task = task;
-	next();
-}
+		res.json({ message: "Task deleted" });
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+});
 
 module.exports = router;
