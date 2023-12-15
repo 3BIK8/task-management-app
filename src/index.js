@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const tasksRouter = require("../routes/tasks");
 const usersRouter = require("../routes/users");
+const collectionsRouter = require("../routes/collections");
 const config = require("../config");
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 // Routes
 app.use("/tasks", tasksRouter);
 app.use("/users", usersRouter);
+app.use("/collections", collectionsRouter);
 
 // Server
 const PORT = process.env.PORT || 5000;

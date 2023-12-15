@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
+const Collection = require("../models/Collection");
 const jwt = require("jsonwebtoken");
 const config = require("../config");
 
@@ -25,7 +26,7 @@ function authenticateToken(req, res, next) {
 		}
 
 		req.user = user;
-		console.log(user)
+		console.log(user);
 		next();
 	});
 }
@@ -81,7 +82,7 @@ router.patch("/:id", authenticateToken, async (req, res) => {
 // Delete a task
 router.delete("/:id", authenticateToken, async (req, res) => {
 	try {
-		const deletedTask = await Task.findByIdAndRemove(req.params.id);
+		const deletedTask = await Task.findOneAndDelete({ _id: req.params.id });
 
 		if (!deletedTask) {
 			return res.status(404).json({ message: "Task not found" });
@@ -90,6 +91,63 @@ router.delete("/:id", authenticateToken, async (req, res) => {
 		res.json({ message: "Task deleted" });
 	} catch (error) {
 		res.status(500).json({ message: error.message });
+	}
+});
+
+router.post("/:taskId/atc/:collectionId", async (req, res) => {
+	try {
+		const task = await Task.findById(req.params.taskId);
+		const collection = await Collection.findById(req.params.collectionId);
+
+		if (!task || !collection) {
+			return res.status(404).json({ message: "Task or Collection not found" });
+		}
+
+		// Check if the task is already in the collection
+		if (collection.tasks.includes(task._id)) {
+			return res
+				.status(400)
+				.json({ message: "Task already exists in the collection" });
+		}
+
+		collection.tasks.push(task._id);
+		await collection.save();
+
+		res.json(collection);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
+// 8. Removing Tasks from Collections
+router.delete("/:taskId/rfc/:collectionId", async (req, res) => {
+	try {
+		const task = await Task.findById(req.params.taskId);
+		const collection = await Collection.findById(req.params.collectionId);
+
+		if (!task || !collection) {
+			return res.status(404).json({ message: "Task or Collection not found" });
+		}
+
+		collection.tasks = collection.tasks.filter(
+			(taskId) => taskId.toString() !== task._id.toString()
+		);
+
+		await collection.save();
+
+		res.json(collection);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
+// 9. Counter for Total Tasks and Tasks per Collection
+router.get("/count", async (req, res) => {
+	try {
+		const totalTasks = await Task.countDocuments();
+		res.json({ totalTasks });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
 	}
 });
 

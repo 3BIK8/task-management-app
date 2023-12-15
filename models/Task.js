@@ -7,18 +7,23 @@ const taskSchema = new mongoose.Schema({
 	},
 	description: {
 		type: String,
+		required: true,
 	},
-	completed: {
-		type: Boolean,
-		default: false,
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User",
+		required: true,
 	},
 	dueDate: {
 		type: Date,
 	},
-	userId: {
-		type: String,
-		ref: "User",
-		required: true,
+	deleted: {
+		type: Boolean,
+		default: false,
+	},
+	completed: {
+		type: Boolean,
+		default: false,
 	},
 });
 
