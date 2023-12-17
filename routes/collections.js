@@ -7,7 +7,14 @@ router.post("/", async (req, res) => {
 	try {
 		const collection = new Collection({
 			name: req.body.name,
-			// other fields
+			name: req.body.name,
+			tasks: req.body.tasks || [],
+			tags: req.body.tags || [],
+			status: req.body.status || "active",
+			priority: req.body.priority || "medium",
+			dueDate: req.body.dueDate || null,
+			important: req.body.important || false,
+			coverPhoto: req.body.coverPhoto || null,
 		});
 
 		const savedCollection = await collection.save();
