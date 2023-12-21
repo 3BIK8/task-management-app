@@ -1,0 +1,45 @@
+.task-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal-content {
+	background: var(--task-bg);
+	width: 500px;
+	height: 500px;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.close {
+	font-size: 3rem;
+	cursor: pointer;
+}
+.top-wrapper {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	align-items: center;
+}
+label {
+	display: block;
+	margin: 1rem 0;
+	font-weight: 500;
+}
+
+input,
+textarea,
+select {
+	width: 100%;
+	padding: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}

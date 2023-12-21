@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../../components/Header/Header";
-import "./Home.css";
 import Navbar from "../../components/SideBar/Navbar";
+import "./Home.css";
 
 function Home() {
 	return (
