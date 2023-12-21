@@ -6,7 +6,7 @@ function TaskCreate({ onClose, Modaltitle }) {
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [dueDate, setDueDate] = useState("");
-	const [priority, setPriority] = useState("Normal");
+	const [priority, setPriority] = useState("Medium");
 	const [tags, setTags] = useState("");
 
 	const handleSave = async () => {
