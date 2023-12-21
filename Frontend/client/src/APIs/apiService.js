@@ -14,7 +14,6 @@ apiService.interceptors.request.use(
 	(config) => {
 		const authToken = localStorage.getItem("authToken");
 
-		// If a token exists, attach it to the Authorization header
 		if (authToken) {
 			config.headers.Authorization = `Bearer ${authToken}`;
 		}
@@ -51,6 +50,13 @@ export const login = async (username, password) => {
 	}
 };
 
-// Add more functions for other API requests as needed
+export const getTasks = async () => {
+	try {
+		const response = await apiService.get("/tasks");
+		return response.data;
+	} catch (error) {
+		throw error.response.data;
+	}
+};
 
 export default apiService;

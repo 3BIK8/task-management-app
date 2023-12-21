@@ -43,7 +43,8 @@ router.get("/", authenticateToken, async (req, res) => {
 
 // Create a new task
 router.post("/", authenticateToken, async (req, res) => {
-	const { title, description, dueDate, priority, tags, status , important } = req.body;
+	const { title, description, dueDate, priority, tags, status, important } =
+		req.body;
 
 	const task = new Task({
 		title,
@@ -54,7 +55,7 @@ router.post("/", authenticateToken, async (req, res) => {
 		tags,
 		status,
 		important,
-		createdAt: new Date()
+		createdAt: new Date(),
 	});
 
 	try {

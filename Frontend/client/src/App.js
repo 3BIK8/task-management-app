@@ -7,6 +7,12 @@ import Home from "./pages/Home/Home";
 import Tasks from "./pages/Tasks/Tasks";
 import Login from "./pages/Login/Login";
 
+/* 
+ TODO : STYLE THE LOGIN PAGE AND THE REGISTER VIA GMAIL TWITTER GITHUB AND FACEBOOK
+ TODO : ADD THE LOGOUT BUTTON
+ TODO : STYLE THE TASKS CONTAINER AND THE TASK 
+ TODO : ADD THE OTHER FUNCTIONALITIES TO THE TASKS
+*/
 const App = () => {
 	return (
 		<Router>
