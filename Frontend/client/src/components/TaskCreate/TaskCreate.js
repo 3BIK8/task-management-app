@@ -19,11 +19,7 @@ function TaskCreate({ onClose, Modaltitle }) {
 		};
 
 		try {
-			// Retrieve the token from storage
-			const authToken = localStorage.getItem("authToken");
-
-			// Attach the token to the request headers
-			const response = await apiService.createTask(newTask, authToken);
+			const response = await apiService.post("/tasks", newTask);
 
 			console.log("Task saved:", response);
 

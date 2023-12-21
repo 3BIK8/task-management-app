@@ -9,27 +9,43 @@ const apiService = axios.create({
 	},
 });
 
-export const createTask = async (newTask, authToken) => {
-	try {
-		const response = await apiService.post("/tasks", newTask, {
-			headers: {
-				Authorization: `Bearer ${authToken}`,
-			},
-		});
+// Add an interceptor to attach the Authorization header with the token to each request
+apiService.interceptors.request.use(
+	(config) => {
+		const authToken = localStorage.getItem("authToken");
 
+		// If a token exists, attach it to the Authorization header
+		if (authToken) {
+			config.headers.Authorization = `Bearer ${authToken}`;
+		}
+
+		return config;
+	},
+	(error) => {
+		return Promise.reject(error);
+	}
+);
+
+// Function to create a task
+export const createTask = async (newTask) => {
+	try {
+		const response = await apiService.post("/tasks", newTask);
 		return response.data;
 	} catch (error) {
 		throw error.response.data;
 	}
 };
 
+// Function to handle login
 export const login = async (username, password) => {
 	try {
-		const response = await apiService.post("/api/users/login", {
-			username,
-			password,
-		});
-		return response.data;
+		const response = await apiService.post("/login", { username, password });
+		const authToken = response.data.token;
+
+		// Store the token securely (localStorage, sessionStorage, or cookie)
+		localStorage.setItem("authToken", authToken);
+
+		console.log("Login successful");
 	} catch (error) {
 		throw error.response.data;
 	}

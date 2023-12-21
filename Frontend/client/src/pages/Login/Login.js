@@ -9,15 +9,16 @@ function Login() {
 
 	const handleLogin = async () => {
 		try {
-			const response = await apiService.post("/login", { username, password });
+			const response = await apiService.post("users/login", {
+				username,
+				password,
+			});
 			const authToken = response.data.token;
 
-			// Store the token securely (localStorage, sessionStorage, or cookie)
 			localStorage.setItem("authToken", authToken);
 
 			console.log("Login successful");
 
-			// Redirect the user to the home page ("/home")
 			navigate("/home");
 		} catch (error) {
 			console.error("Login failed:", error.message);
