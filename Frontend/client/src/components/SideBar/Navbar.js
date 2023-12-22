@@ -10,8 +10,8 @@ const Navbar = () => {
 	return (
 		<nav className="navbar">
 			<ul className="nav-items">
-				<li className={location.pathname === "/" ? "active" : ""}>
-					<Link to="/">
+				<li className={location.pathname === "/home" ? "active" : ""}>
+					<Link to="/home">
 						<LuHome />
 						<span>Home</span>
 					</Link>

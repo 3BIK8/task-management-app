@@ -25,17 +25,6 @@ apiService.interceptors.request.use(
 	}
 );
 
-// Function to create a task
-export const createTask = async (newTask) => {
-	try {
-		const response = await apiService.post("/tasks", newTask);
-		return response.data;
-	} catch (error) {
-		throw error.response.data;
-	}
-};
-
-// Function to handle login
 export const login = async (username, password) => {
 	try {
 		const response = await apiService.post("/login", { username, password });
@@ -49,6 +38,26 @@ export const login = async (username, password) => {
 		throw error.response.data;
 	}
 };
+
+export const registerUser = async (userData) => {
+	try {
+		const response = await apiService.post("/register", userData);
+		return response.data;
+	} catch (error) {
+		throw error.response.data;
+	}
+};
+
+// Function to create a task
+export const createTask = async (newTask) => {
+	try {
+		const response = await apiService.post("/tasks", newTask);
+		return response.data;
+	} catch (error) {
+		throw error.response.data;
+	}
+};
+
 
 export const getTasks = async () => {
 	try {

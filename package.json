@@ -14,7 +14,8 @@
 		"tailwindcss": "^3.3.6"
 	},
 	"scripts": {
-		"start:server": "cd backend && npm start",
+		"start:server": "cd backend && nodemon src/index.js",
 		"start:client": "cd frontend/client && set PORT=4004 && npm start"
 	}
 }
+	
