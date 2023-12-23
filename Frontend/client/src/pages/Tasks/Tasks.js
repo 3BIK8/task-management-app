@@ -4,6 +4,7 @@ import Navbar from "../../components/SideBar/Navbar";
 import Subnav from "../../components/Subnav/Subnav";
 import "./Tasks.css";
 import TaskContainer from "../../components/TaskContainer/TaskContainer";
+import Logout from "../../components/Logout/Logout";
 function Tasks() {
 	return (
 		<>
@@ -12,7 +13,8 @@ function Tasks() {
 				<Navbar />
 				<div className="sub-wrapper">
 					<Subnav title="my tasks" buttonContent="add task" />
-					<TaskContainer/>
+					<TaskContainer />
+					<Logout />
 				</div>
 			</div>
 		</>
